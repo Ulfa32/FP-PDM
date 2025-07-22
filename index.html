@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Prediksi Harga Rumah</title>
+  <!-- Font Awesome CDN -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #e9f5f9;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+    header {
+      background-color: #427aa1;
+      color: white;
+      padding: 20px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+    }
+    header h1 {
+      margin: 0;
+      font-size: 20px;
+    }
+    nav {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    nav a {
+      color: white;
+      margin: 5px 10px;
+      text-decoration: none;
+      font-size: 14px;
+    }
+    main {
+      flex: 1;
+      width: 100%;
+      max-width: 1000px;
+      margin: 30px auto;
+      background-color: #d9ecf2;
+      border-radius: 10px;
+      padding: 30px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 20px;
+    }
+    .form-section, .result-section {
+      flex: 1;
+      background-color: #e3f0f4;
+      padding: 20px;
+      border-radius: 10px;
+      min-width: 300px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+    }
+    .result-section {
+      max-width: 450px;
+    }
+    .form-section h3, .result-section h3 {
+      text-align: center;
+      margin-bottom: 20px;
+      color: #2b6777;
+    }
+    label {
+      font-weight: bold;
+      margin-top: 10px;
+      display: block;
+    }
+    input, select {
+      width: 100%;
+      height: 38px;
+      padding: 10px 12px;
+      margin-top: 5px;
+      border: 1px solid #bbb;
+      border-radius: 4px;
+      box-sizing: border-box;
+      font-size: 14px;
+    }
+    .submit-button {
+      background-color: #4a90a4;
+      color: white;
+      padding: 10px;
+      margin-top: 20px;
+      border: none;
+      width: 100%;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s ease, transform 0.2s ease;
+      font-size: 16px;
+    }
+    .submit-button:hover {
+      background-color: #3a7c90;
+      transform: scale(1.02);
+    }
+    .result-box {
+      background-color: #ffffff;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      padding: 50px;
+      text-align: center;
+      font-weight: bold;
+    }
+    .result-value {
+      margin-top: 10px;
+      font-size: 20px;
+      color: #2a2a2a;
+    }
+    .result-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-around;
+      margin-top: 20px;
+      gap: 10px;
+    }
+    .btn-secondary, .btn-primary {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      color: white;
+      cursor: pointer;
+      transition: background-color 0.3s ease, transform 0.2s ease;
+    }
+    .btn-secondary {
+      background-color: #457b9d;
+    }
+    .btn-primary {
+      background-color: #22b998;
+    }
+    .btn-secondary:hover, .btn-primary:hover {
+      transform: scale(1.02);
+      opacity: 0.9;
+    }
+    footer {
+      background-color: #2b6777;
+      color: white;
+      padding: 20px;
+      font-size: 13px;
+      text-align: center;
+    }
+    footer a {
+      color: white;
+      text-decoration: underline;
+      margin: 0 10px;
+    }
+    @media (max-width: 768px) {
+      html, body {
+        width: 100%;
+        overflow-x: hidden;
+      }
+      header {
+        flex-direction: column;
+        text-align: center;
+      }
+      nav {
+        margin-top: 10px;
+        flex-direction: column;
+      }
+      nav a {
+        margin: 8px 0;
+      }
+      main {
+        flex-direction: column;
+        padding: 15px;
+      }
+      .form-section, .result-section {
+        width: 100%;
+        margin-bottom: 20px;
+        padding: 15px;
+        border-radius: 8px;
+      }
+      input, select {
+        font-size: 15px;
+      }
+      .submit-button {
+        font-size: 15px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Prediksi Harga Rumah</h1>
+    <nav>
+      <a href="/">Beranda</a>
+      <a href="/panduan">Panduan</a>
+      <a href="/tentang">Tentang Project</a>
+    </nav>
+  </header>
+  <main>
+    <div class="form-section">
+      <h3><i class="fas fa-edit"></i> INPUT DATA</h3>
+      <form action="/predict" method="post">
+        <label for="luas_bangunan">Luas Bangunan (m²)</label>
+        <input type="number" name="luas_bangunan" id="luas_bangunan" required step="any" value="{{ luas_bangunan or '' }}">
+        
+        <label for="luas_tanah">Luas Tanah (m²)</label>
+        <input type="number" name="luas_tanah" id="luas_tanah" required step="any" value="{{ luas_tanah or '' }}">
+        
+        <label for="kamar_tidur">Jumlah Kamar Tidur</label>
+        <select name="kamar_tidur" id="kamar_tidur" required>
+          <option value="">-- Pilih --</option>
+          {% for i in range(1, 11) %}
+            <option value="{{ i }}" {% if kamar_tidur == i %}selected{% endif %}>{{ i }}</option>
+          {% endfor %}
+        </select>
+
+        <label for="kamar_mandi">Jumlah Kamar Mandi</label>
+        <select name="kamar_mandi" id="kamar_mandi" required>
+          <option value="">-- Pilih --</option>
+          {% for i in range(1, 11) %}
+            <option value="{{ i }}" {% if kamar_mandi == i %}selected{% endif %}>{{ i }}</option>
+          {% endfor %}
+        </select>
+
+        <label for="jumlah_lantai">Jumlah Lantai</label>
+        <select name="jumlah_lantai" id="jumlah_lantai" required>
+          <option value="">-- Pilih --</option>
+          {% for i in range(1, 11) %}
+            <option value="{{ i }}" {% if jumlah_lantai == i %}selected{% endif %}>{{ i }}</option>
+          {% endfor %}
+        </select>
+
+        <label for="total_rooms_display">Total Rooms (otomatis)</label>
+        <input type="number" id="total_rooms_display" readonly step="any" value="{{ total_rooms or 0 }}">
+        <input type="hidden" name="total_rooms" id="total_rooms" value="{{ total_rooms or 0 }}">
+
+        <label for="harga_per_m2_display">Harga per m² (otomatis)</label>
+        <input type="number" id="harga_per_m2_display" readonly step="any" value="{{ harga_per_m2 or 0 }}">
+        <input type="hidden" name="harga_per_m2" id="harga_per_m2" value="{{ harga_per_m2 or 0 }}">
+
+        <button type="submit" class="submit-button">Mulai Prediksi</button>
+      </form>
+    </div>
+
+    <div class="result-section">
+      <h3><i class="fas fa-chart-line"></i> HASIL PREDIKSI</h3>
+      <div class="result-box">
+        Harga Prediksi
+        <div class="result-value">
+          {% if prediction %}Rp {{ prediction }}{% else %}Belum ada hasil{% endif %}
+        </div>
+      </div>
+      <div class="result-buttons">
+        <button type="button" class="btn-secondary" onclick="resetForm()"><i class="fas fa-redo"></i> Ulangi</button>
+        <button type="button" class="btn-primary" onclick="window.location.href='/'"><i class="fas fa-check"></i> Selesai</button>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <p>© 2025 Prediksi Harga Rumah</p>
+    <p><a href="/">Beranda</a> | <a href="/panduan">Panduan</a> | <a href="/tentang">Tentang Project</a></p>
+  </footer>
+
+  <script>
+    function updateFields() {
+      const tidur = parseInt(document.getElementById('kamar_tidur').value) || 0;
+      const mandi = parseInt(document.getElementById('kamar_mandi').value) || 0;
+      const luasTanah = parseFloat(document.getElementById('luas_tanah').value) || 0;
+      const luasBangunan = parseFloat(document.getElementById('luas_bangunan').value) || 1;
+
+      const totalRooms = tidur + mandi;
+      const hargaPerM2 = (luasTanah / luasBangunan).toFixed(2);
+
+      document.getElementById('total_rooms_display').value = totalRooms;
+      document.getElementById('total_rooms').value = totalRooms;
+
+      document.getElementById('harga_per_m2_display').value = hargaPerM2;
+      document.getElementById('harga_per_m2').value = hargaPerM2;
+    }
+
+    function resetForm() {
+      document.querySelector('form').reset();
+      updateFields();
+      document.querySelector('.result-value').innerText = 'Belum ada hasil';
+    }
+
+    window.onload = updateFields;
+    document.querySelectorAll('input, select').forEach(el => {
+      el.addEventListener('input', updateFields);
+      el.addEventListener('change', updateFields);
+    });
+  </script>
+</body>
+</html>
